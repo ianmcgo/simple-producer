@@ -125,3 +125,5 @@ Page menu order: fold-outs first (Open / Save / Print, + or - Pages, Page backgr
 "Remove imported PDF or Word" removes the imported background from every page.
 
 Menu panels drop down under their button and shift left only as far as needed to stay on screen (fitPanel). The earlier full-width phone layout was removed.
+
+The Add header and Add footer buttons turn into Remove header and Remove footer while one exists; removing deletes every header or footer box.

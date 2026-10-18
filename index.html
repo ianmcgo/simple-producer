@@ -1389,6 +1389,8 @@ input[type=range]{accent-color:var(--accent)}
     ctl.cutBlock.disabled=!f||!!f.b.run;
     ctl.where.textContent='Page '+(currentPage+1)+' of '+state.pages.length;
     ctl.where.hidden=!state.where;
+    ctl.addHeader.textContent=state.running.some(x=>x.run==='header')?'Remove header':'Add header';
+    ctl.addFooter.textContent=state.running.some(x=>x.run==='footer')?'Remove footer':'Add footer';
     Array.from(pagesEl.children).forEach((pe,i)=>pe.classList.toggle('current',i===currentPage&&state.pages.length>1));
     syncBg();
     if(!f)return;
@@ -3304,8 +3306,20 @@ input[type=range]{accent-color:var(--accent)}
     save();
   }
 
-  ctl.addHeader.addEventListener('click',()=>addRunning('header'));
-  ctl.addFooter.addEventListener('click',()=>addRunning('footer'));
+  function toggleRunning(kind){
+    if(!state.running.some(x=>x.run===kind)){
+      addRunning(kind);
+      return;
+    }
+    state.running=state.running.filter(x=>x.run!==kind);
+    selected=null;
+    closeMenus();
+    render();
+    save();
+  }
+
+  ctl.addHeader.addEventListener('click',()=>toggleRunning('header'));
+  ctl.addFooter.addEventListener('click',()=>toggleRunning('footer'));
   ctl.runPages.addEventListener('input',()=>{
     clearTimeout(runTimer);
     runTimer=setTimeout(applyRunPages,500);
