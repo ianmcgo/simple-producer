@@ -911,12 +911,13 @@ input[type=range]{accent-color:var(--accent)}
   function fitPanel(panel){
     panel.style.left='0px';
     const r=panel.getBoundingClientRect();
-    const vw=Math.min(window.innerWidth,document.documentElement.clientWidth||9999,(window.visualViewport&&window.visualViewport.width)||9999,window.screen.width||9999);
-    const over=r.right-(vw-8);
-    if(over>0){
-      const room=r.left-8;
-      panel.style.left=(-Math.min(over,Math.max(0,room)))+'px';
-    }
+    const vv=window.visualViewport;
+    const lo=(vv?vv.offsetLeft:0)+8;
+    const hi=(vv?vv.offsetLeft+vv.width:Math.min(window.innerWidth,window.screen.width||9999))-8;
+    let dx=0;
+    if(r.right>hi)dx=hi-r.right;
+    if(r.left+dx<lo)dx=lo-r.left;
+    panel.style.left=dx+'px';
   }
   menus.forEach(m=>{
     const btn=m.querySelector('button');
