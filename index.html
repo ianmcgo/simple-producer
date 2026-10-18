@@ -456,11 +456,6 @@ input[type=range]{accent-color:var(--accent)}
           </div>
         </div>
       </details>
-      <div class="row">
-        <button id="undo" type="button">Undo</button>
-        <button id="redo" type="button">Redo</button>
-        <button id="drawStart" type="button">Draw</button>
-      </div>
       <details id="pagesSect">
         <summary>+ or - Pages</summary>
         <div class="grp tight">
@@ -487,10 +482,6 @@ input[type=range]{accent-color:var(--accent)}
           <button id="impRemove" type="button">Remove imported background (this page)</button>
         </div>
       </details>
-      <div class="row nowrap">
-        <button id="addHeader" type="button">Add header</button>
-        <button id="addFooter" type="button">Add footer</button>
-      </div>
       <details id="viewSect">
         <summary>Show and tools</summary>
         <div class="grp tight">
@@ -503,6 +494,15 @@ input[type=range]{accent-color:var(--accent)}
           <label id="skyRow" hidden>Sky color <input id="skyColor" type="color" value="#05060d"></label>
         </div>
       </details>
+      <div class="row">
+        <button id="undo" type="button">Undo</button>
+        <button id="redo" type="button">Redo</button>
+        <button id="drawStart" type="button">Draw</button>
+      </div>
+      <div class="row nowrap">
+        <button id="addHeader" type="button">Add header</button>
+        <button id="addFooter" type="button">Add footer</button>
+      </div>
       <div class="row nowrap">
         <label class="grow zoomrow">Zoom <input id="zoomRange" type="range" min="25" max="300" step="1" value="100"> <span class="pct" id="zoomLabel">100%</span></label>
       </div>
