@@ -108,3 +108,6 @@ The page menu has a Stars on/off button above Delete all boxes. When stars are o
 
 ## Save as PDF
 Save as PDF renders each page with html2canvas (loaded on first use) and downloads a real multi-page Letter PDF of page images. Print opens the browser print dialog.
+
+## Current page glow
+The page that new boxes go into gets a faint gold glow (class `current`, set in the menu sync). It is hidden when there is only one page, in print, and in PDF export.
