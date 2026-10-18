@@ -4,7 +4,7 @@ A single-file web app for laying out RPG supplement pages. Open `index.html` in 
 
 ## Menus
 
-- Page: Undo and Redo, Add pages (any number), Delete pages (type a list like `1-3` or `2,5,7`), Page background, Draw, Add header and Add footer, Page numbers, Snap to grid, Spell check, Show page indicator, Night mode, zoom slider with Fit width and Fit height, Print, Print all as PDF, Delete all boxes (press twice to confirm; Undo brings them back).
+- Page: Undo and Redo, Add pages (any number), Delete pages (type a list like `1-3` or `2,5,7`), Page background, Draw, Add header and Add footer, Page numbers, Snap to grid, Spell check, Show page indicator, Night mode, zoom slider with Fit width and Fit height, Save as JSON, Open JSON, Print, Print all as PDF, Delete all boxes (press twice to confirm; Undo brings them back).
 - Insert: Text block, Image box (an empty drop zone), Table (3 x 3).
 - Edit: appears while a box is selected. Its sections depend on the box type.
 - The buttons are centered on the top bar. "Page 1 of 2" is a small badge at the bottom right of the screen and can be hidden in the Page menu.
@@ -59,6 +59,10 @@ Replace, fit (inside, crop, stretch), Opacity, Flip left-right, Flip top-bottom,
 ## Drawing
 
 Page > Draw opens a pen bar with color, opacity and thickness. Draw on one page with a mouse, finger or pen. Undo stroke, Clear, Cancel, or Done. Done turns the strokes into a box you can move, resize, rotate, copy and delete. It is stored as vector strokes, so it stays sharp when resized.
+
+## Saving your work
+
+Page > Save as JSON downloads everything (pages, boxes, images, drawings, backgrounds, headers and footers, and the page settings) as `simple-producer-DATE.json`. Page > Open JSON loads one back and replaces what is on screen; Undo brings the previous work back. Opening a file checks and cleans it first: unknown box types are dropped, scripts and event handlers are stripped from text, and only png, jpeg, gif or webp data images are kept. Keep the files somewhere safe, since the browser's own saved copy is lost if you clear site data.
 
 ## Printing
 
