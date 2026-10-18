@@ -189,6 +189,11 @@ input[type=range]{accent-color:var(--accent)}
   box-shadow:0 4px 18px rgba(0,0,0,.6);
   overflow:hidden;
 }
+.exporting .guide,.exporting .grip,.exporting .resize,.exporting .rot,.exporting .rzx,.exporting .rzy{display:none!important}
+.exporting .page{box-shadow:none}
+.exporting .block,.exporting .page:hover .block{outline:none!important}
+.exporting .imgbox.empty{visibility:hidden}
+.exporting .tbl td.csel{box-shadow:none;background-image:none}
 .pgbg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;user-select:none}
 .impdoc{box-sizing:border-box;color:#000;background:#fff;font:16px/1.4 Georgia,serif}
 .impdoc p{margin:0 0 .8em}
@@ -483,8 +488,10 @@ input[type=range]{accent-color:var(--accent)}
       </div>
       <div class="row nowrap">
         <button id="printNormal" type="button" title="Opens the print dialog.">Print</button>
-        <button class="primary" id="print" type="button" title="Opens the print dialog. Choose Save as PDF as the destination.">Print all as PDF</button>
+        <button class="primary" id="print" type="button" title="Downloads a PDF file with every page">Save as PDF</button>
       </div>
+      <button id="starsToggle" type="button" aria-pressed="true">Stars: on</button>
+      <label id="skyRow" hidden>Sky color <input id="skyColor" type="color" value="#05060d"></label>
       <button id="clearBoxes" type="button">Delete all boxes</button>
     </div>
   </div>
@@ -2219,6 +2226,104 @@ input[type=range]{accent-color:var(--accent)}
     if(f)openJson(f);
   });
 
+  function dataUrlBytes(u){
+    const b=atob(u.slice(u.indexOf(',')+1));
+    const a=new Uint8Array(b.length);
+    for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);
+    return a;
+  }
+
+  function buildPdf(jpegs){
+    const enc=new TextEncoder();
+    const parts=[];
+    const offs=[];
+    let len=0;
+    const push=x=>{
+      const a=typeof x==='string'?enc.encode(x):x;
+      parts.push(a);
+      len+=a.length;
+    };
+    const obj=(id,fn)=>{
+      offs[id]=len;
+      push(id+' 0 obj\n');
+      fn();
+      push('\nendobj\n');
+    };
+    const n=jpegs.length;
+    push('%PDF-1.4\n');
+    obj(1,()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+    obj(2,()=>push('<< /Type /Pages /Count '+n+' /Kids ['+jpegs.map((j,i)=>(3+i*3)+' 0 R').join(' ')+'] >>'));
+    jpegs.forEach((j,i)=>{
+      const pid=3+i*3,iid=pid+1,cid=pid+2;
+      const c='q 612 0 0 792 0 0 cm /Im0 Do Q';
+      obj(pid,()=>push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /XObject << /Im0 '+iid+' 0 R >> >> /Contents '+cid+' 0 R >>'));
+      obj(iid,()=>{
+        push('<< /Type /XObject /Subtype /Image /Width '+j.w+' /Height '+j.h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+j.bytes.length+' >>\nstream\n');
+        push(j.bytes);
+        push('\nendstream');
+      });
+      obj(cid,()=>push('<< /Length '+c.length+' >>\nstream\n'+c+'\nendstream'));
+    });
+    const total=3+n*3;
+    const at=len;
+    push('xref\n0 '+total+'\n0000000000 65535 f \n');
+    for(let id=1;id<total;id++)push(String(offs[id]).padStart(10,'0')+' 00000 n \n');
+    push('trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+at+'\n%%EOF');
+    const out=new Uint8Array(len);
+    let p=0;
+    parts.forEach(a=>{
+      out.set(a,p);
+      p+=a.length;
+    });
+    return out;
+  }
+
+  let pdfBusy=false;
+
+  async function savePdf(){
+    if(pdfBusy)return;
+    pdfBusy=true;
+    closeMenus();
+    if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+    ctl.print.disabled=true;
+    const stage=document.createElement('div');
+    stage.className='pages exporting'+(state.bw?' bw':'');
+    stage.style.cssText='position:fixed;left:-20000px;top:0;display:block;width:816px;min-width:0;zoom:1';
+    document.body.append(stage);
+    try{
+      await loadScript(LIBS.h2c);
+      const jpegs=[];
+      const pgs=Array.from(pagesEl.children);
+      for(let i=0;i<pgs.length;i++){
+        toast('Making the PDF: page '+(i+1)+' of '+pgs.length+'...');
+        const c=pgs[i].cloneNode(true);
+        c.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+        stage.textContent='';
+        stage.append(c);
+        await new Promise(r=>requestAnimationFrame(()=>r()));
+        const cv=await window.html2canvas(c,{scale:2,backgroundColor:'#ffffff',logging:false,width:PW,height:PH});
+        jpegs.push({bytes:dataUrlBytes(cv.toDataURL('image/jpeg',0.92)),w:cv.width,h:cv.height});
+      }
+      const blob=new Blob([buildPdf(jpegs)],{type:'application/pdf'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='simple-producer-'+new Date().toISOString().slice(0,10)+'.pdf';
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+      toast('Saved '+a.download+'.');
+    }catch(e){
+      toast('The PDF could not be made ('+(e&&e.message||'unknown error')+'). The first time needs an internet connection. The Print button still works.');
+    }finally{
+      stage.remove();
+      ctl.print.disabled=false;
+      pdfBusy=false;
+    }
+  }
+
+  ctl.print.addEventListener('click',savePdf);
+
   ctl.importBg.addEventListener('click',()=>{
     ctl.bgFile.value='';
     ctl.bgFile.click();
@@ -3142,7 +3247,6 @@ input[type=range]{accent-color:var(--accent)}
     if(document.activeElement)document.activeElement.blur();
     window.print();
   };
-  ctl.print.addEventListener('click',doPrint);
   ctl.printNormal.addEventListener('click',doPrint);
 
   function addRunning(kind){
@@ -3330,8 +3434,48 @@ input[type=range]{accent-color:var(--accent)}
       sctx.fill();
     }
     sctx.globalAlpha=1;
-    if(!reduceMotion)requestAnimationFrame(drawStars);
+    if(!reduceMotion&&starsOn)requestAnimationFrame(drawStars);
+    else rafOn=false;
   }
+
+  let starsOn=true;
+  let rafOn=false;
+  const skyPrefs={on:true,color:'#05060d'};
+  try{
+    const sp=JSON.parse(localStorage.getItem('simple-producer-sky')||'null');
+    if(sp){
+      skyPrefs.on=sp.on!==false;
+      if(/^#[0-9a-f]{6}$/i.test(sp.color))skyPrefs.color=sp.color;
+    }
+  }catch(e){}
+
+  function applySky(){
+    starsOn=skyPrefs.on;
+    const bgc=starsOn?'':skyPrefs.color;
+    document.body.style.background=bgc;
+    document.documentElement.style.background=bgc;
+    starsEl.style.display=starsOn?'':'none';
+    ctl.starsToggle.textContent='Stars: '+(starsOn?'on':'off');
+    ctl.starsToggle.setAttribute('aria-pressed',String(starsOn));
+    ctl.skyRow.hidden=starsOn;
+    if(document.activeElement!==ctl.skyColor)ctl.skyColor.value=skyPrefs.color;
+    if(starsOn&&!rafOn&&!reduceMotion){
+      rafOn=true;
+      lastT=performance.now();
+      requestAnimationFrame(drawStars);
+    }
+    if(starsOn&&reduceMotion)drawStars(0);
+    try{localStorage.setItem('simple-producer-sky',JSON.stringify(skyPrefs))}catch(e){}
+  }
+
+  ctl.starsToggle.addEventListener('click',()=>{
+    skyPrefs.on=!skyPrefs.on;
+    applySky();
+  });
+  ctl.skyColor.addEventListener('input',()=>{
+    skyPrefs.color=ctl.skyColor.value;
+    applySky();
+  });
 
   sizeStars();
   window.addEventListener('resize',()=>{
@@ -3341,8 +3485,10 @@ input[type=range]{accent-color:var(--accent)}
   if(reduceMotion){
     drawStars(0);
   }else{
+    rafOn=true;
     requestAnimationFrame(drawStars);
   }
+  applySky();
 
 
   ctl.selRow.addEventListener('click',()=>selectSpan('row'));

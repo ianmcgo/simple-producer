@@ -102,3 +102,9 @@ Older saved files are upgraded on load: the old gaming sample text is swapped fo
 - Images are shrunk to 1400 px on the long side and stored in the saved data, so a few large images can fill the roughly 5 MB of browser storage.
 - A drawing belongs to one page. Cut and paste of boxes uses an in-app clipboard (it does not leave the page).
 - Cross-page drag preview shows a faint copy of the box; very small phone screens may find it easier to zoom out first.
+
+## Stars toggle and sky color
+The page menu has a Stars on/off button above Delete all boxes. When stars are off, a Sky color picker appears and sets the page background where the stars were. The choice is a viewing preference kept in localStorage key `simple-producer-sky`, not in saved JSON.
+
+## Save as PDF
+Save as PDF renders each page with html2canvas (loaded on first use) and downloads a real multi-page Letter PDF of page images. Print opens the browser print dialog.
