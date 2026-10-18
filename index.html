@@ -479,7 +479,7 @@ input[type=range]{accent-color:var(--accent)}
           <label class="grow">Opacity <input id="bgOp" type="range" min="0" max="100" value="100"> <span class="pct" id="bgOpLabel">100%</span></label>
           <label><input id="bgAll" type="checkbox" checked> Apply to all pages</label>
           <label class="grow">Imported opacity <input id="impOp" type="range" min="0" max="100" value="100"> <span class="pct" id="impOpLabel">100%</span></label>
-          <button id="impRemove" type="button">Remove imported background (this page)</button>
+          <button id="impRemove" type="button">Remove imported PDF or Word</button>
         </div>
       </details>
       <details id="viewSect">
@@ -1894,7 +1894,7 @@ input[type=range]{accent-color:var(--accent)}
     ctl.bgOpLabel.textContent=op+'%';
     const has=!!(p.bg&&p.bg.src);
     ctl.impOp.disabled=!has;
-    ctl.impRemove.disabled=!has;
+    ctl.impRemove.disabled=!state.pages.some(q=>q.bg&&q.bg.src);
     const io=has&&p.bg.op!=null?p.bg.op:100;
     ctl.impOp.value=String(io);
     ctl.impOpLabel.textContent=io+'%';
@@ -1942,8 +1942,12 @@ input[type=range]{accent-color:var(--accent)}
     save();
   });
   ctl.impRemove.addEventListener('click',()=>{
-    delete state.pages[currentPage].bg;
-    paintPage(currentPage);
+    state.pages.forEach((q,i)=>{
+      if(q.bg){
+        delete q.bg;
+        paintPage(i);
+      }
+    });
     syncBg();
     save();
   });

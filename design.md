@@ -121,3 +121,5 @@ Add pages and Delete pages sit in a closed fold-out called "+ or - Pages".
 On screens 640 px wide or less, menu panels span the screen width under the top bar instead of hanging off the right edge. The Import PDF or Word button is only as wide as its text.
 
 Page menu order: fold-outs first (Open / Save / Print, + or - Pages, Page background, Show and tools), then Undo/Redo/Draw, Add header/footer, zoom controls, and Delete all boxes last.
+
+"Remove imported PDF or Word" removes the imported background from every page.
