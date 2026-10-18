@@ -436,6 +436,21 @@ input[type=range]{accent-color:var(--accent)}
   <div class="menu">
     <button id="pageMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="pageMenu">Page</button>
     <div class="panel" id="pageMenu" hidden>
+      <details id="fileSect">
+        <summary>Open / Save / Print</summary>
+        <div class="grp tight">
+          <div class="hint">Import a PDF or Word (.docx) file to use its pages as a locked background to build over. It starts on this page.</div>
+          <button id="importBg" type="button">Import PDF or Word</button>
+          <div class="row nowrap">
+            <button id="openJson" type="button" title="Load a .json file saved earlier">Open JSON</button>
+            <button id="saveJson" type="button" title="Download your work as a .json file">Save as JSON</button>
+          </div>
+          <div class="row nowrap">
+            <button id="printNormal" type="button" title="Opens the print dialog.">Print</button>
+            <button class="primary" id="print" type="button" title="Downloads a PDF file with every page">Save as PDF</button>
+          </div>
+        </div>
+      </details>
       <div class="row">
         <button id="undo" type="button">Undo</button>
         <button id="redo" type="button">Redo</button>
@@ -458,8 +473,6 @@ input[type=range]{accent-color:var(--accent)}
           </div>
           <label class="grow">Opacity <input id="bgOp" type="range" min="0" max="100" value="100"> <span class="pct" id="bgOpLabel">100%</span></label>
           <label><input id="bgAll" type="checkbox" checked> Apply to all pages</label>
-          <div class="hint">Import a PDF or Word (.docx) file to use its pages as a locked background to build over. It starts on this page.</div>
-          <button id="importBg" type="button">Import PDF or Word</button>
           <label class="grow">Imported opacity <input id="impOp" type="range" min="0" max="100" value="100"> <span class="pct" id="impOpLabel">100%</span></label>
           <button id="impRemove" type="button">Remove imported background (this page)</button>
         </div>
@@ -475,9 +488,11 @@ input[type=range]{accent-color:var(--accent)}
           <label><input id="snap" type="checkbox"> Snap to grid</label>
           <label><input id="spell" type="checkbox"> Spell check</label>
           <label><input id="showWhere" type="checkbox"> Show page indicator</label>
+          <button id="bwMode" type="button" aria-pressed="false">Night mode: off</button>
+          <button id="starsToggle" type="button" aria-pressed="true">Stars: on</button>
+          <label id="skyRow" hidden>Sky color <input id="skyColor" type="color" value="#05060d"></label>
         </div>
       </details>
-      <button id="bwMode" type="button" aria-pressed="false">Night mode: off</button>
       <div class="row nowrap">
         <label class="grow zoomrow">Zoom <input id="zoomRange" type="range" min="25" max="300" step="1" value="100"> <span class="pct" id="zoomLabel">100%</span></label>
       </div>
@@ -485,16 +500,6 @@ input[type=range]{accent-color:var(--accent)}
         <button id="zoomFit" type="button">Fit width</button>
         <button id="zoomFitH" type="button">Fit height</button>
       </div>
-      <div class="row nowrap">
-        <button id="saveJson" type="button" title="Download your work as a .json file">Save as JSON</button>
-        <button id="openJson" type="button" title="Load a .json file saved earlier">Open JSON</button>
-      </div>
-      <div class="row nowrap">
-        <button id="printNormal" type="button" title="Opens the print dialog.">Print</button>
-        <button class="primary" id="print" type="button" title="Downloads a PDF file with every page">Save as PDF</button>
-      </div>
-      <button id="starsToggle" type="button" aria-pressed="true">Stars: on</button>
-      <label id="skyRow" hidden>Sky color <input id="skyColor" type="color" value="#05060d"></label>
       <button id="clearBoxes" type="button">Delete all boxes</button>
     </div>
   </div>

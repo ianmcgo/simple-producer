@@ -111,3 +111,7 @@ Save as PDF renders each page with html2canvas (loaded on first use) and downloa
 
 ## Current page glow
 The page that new boxes go into gets a faint gold glow (class `current`, set in the menu sync). It is hidden when there is only one page, in print, and in PDF export.
+
+Night mode and Stars buttons (and the Sky color picker) now live inside the Show and tools fold-out.
+
+The top of the Page menu has an Open / Save / Print fold-out holding Import PDF or Word, Open JSON, Save as JSON, Print and Save as PDF.
