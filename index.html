@@ -411,6 +411,11 @@ input[type=range]{accent-color:var(--accent)}
 .foot a{color:#e2cfa2}
 .credit{text-align:center;padding:0 0 16px;color:#b9ae99;font-size:13px}
 @media (max-width:640px){
+  .bar{position:relative}
+  .menu{position:static}
+  .panel{left:8px;right:8px;top:100%;width:auto;max-width:none;max-height:calc(100vh - 150px);margin-top:4px}
+  .panel .row.nowrap{flex-wrap:wrap}
+  .panel input[type=range]{min-width:80px}
   .group + .group{padding-left:0;border-left:0}
 }
 @media print{
@@ -440,7 +445,7 @@ input[type=range]{accent-color:var(--accent)}
         <summary>Open / Save / Print</summary>
         <div class="grp tight">
           <div class="hint">Import a PDF or Word (.docx) file to use its pages as a locked background to build over. It starts on this page.</div>
-          <button id="importBg" type="button">Import PDF or Word</button>
+          <button id="importBg" type="button" style="align-self:flex-start">Import PDF or Word</button>
           <div class="row nowrap">
             <button id="openJson" type="button" title="Load a .json file saved earlier">Open JSON</button>
             <button id="saveJson" type="button" title="Download your work as a .json file">Save as JSON</button>

@@ -117,3 +117,5 @@ Night mode and Stars buttons (and the Sky color picker) now live inside the Show
 The top of the Page menu has an Open / Save / Print fold-out holding Import PDF or Word, Open JSON, Save as JSON, Print and Save as PDF.
 
 Add pages and Delete pages sit in a closed fold-out called "+ or - Pages".
+
+On screens 640 px wide or less, menu panels span the screen width under the top bar instead of hanging off the right edge. The Import PDF or Word button is only as wide as its text.
