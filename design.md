@@ -10,6 +10,8 @@ A single-file web app for laying out RPG supplement pages. Open `index.html` in 
 - The buttons are centered on the top bar. "Page 1 of 2" is a small badge at the bottom right of the screen and can be hidden in the Page menu.
 - The background behind the pages is a field of slowly falling stars. Scrolling or zooming the pages does not move them. It stops if the system asks for reduced motion and never prints.
 
+Drop-down panels never show a scrollbar. If one is taller than the window it still scrolls with the wheel or a swipe.
+
 ## Every box
 
 - Top tab: drag "Move" to reposition. The small x at its right end deletes the box.
