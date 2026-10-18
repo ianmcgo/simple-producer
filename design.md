@@ -127,3 +127,6 @@ Page menu order: fold-outs first (Open / Save / Print, + or - Pages, Page backgr
 Menu panels drop down under their button and shift left only as far as needed to stay on screen (fitPanel). The earlier full-width phone layout was removed.
 
 The Add header and Add footer buttons turn into Remove header and Remove footer while one exists; removing deletes every header or footer box.
+
+## First-open notice
+A one-time dialog explains that uploads and pictures live in local browser storage, large files load slowly, storage can fill up, and clearing site data in browser settings fixes it. Dismissal is remembered in localStorage key `simple-producer-welcome`.

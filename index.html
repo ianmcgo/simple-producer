@@ -410,10 +410,17 @@ input[type=range]{accent-color:var(--accent)}
 }
 .foot a{color:#e2cfa2}
 .credit{text-align:center;padding:0 0 16px;color:#b9ae99;font-size:13px}
+#welcome{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.72)}
+#welcome[hidden]{display:none}
+#welcome .box{max-width:440px;max-height:calc(100vh - 32px);overflow:auto;padding:20px 22px;background:#2e2a26;color:var(--bar-ink);border:1px solid #5a544b;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#welcome h2{margin:0 0 10px;font-size:18px}
+#welcome p{margin:0 0 10px}
+#welcome .actions{display:flex;justify-content:flex-end;margin-top:14px}
 @media (max-width:640px){
   .group + .group{padding-left:0;border-left:0}
 }
 @media print{
+  #welcome{display:none!important}
   html,body{height:auto;background:#fff;display:block}
   #stars,.bar,.foot,.credit,.toast,.drawbar,.where{display:none!important}
   .desk{overflow:visible;padding:0;background:none}
@@ -432,6 +439,15 @@ input[type=range]{accent-color:var(--accent)}
 </head>
 <body>
 <canvas id="stars" aria-hidden="true"></canvas>
+<div id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" hidden>
+  <div class="box">
+    <h2 id="welcomeTitle">Before you start</h2>
+    <p>Everything you add here, including uploaded documents and pictures, is stored in your browser's local storage on this device. Nothing is sent to a server.</p>
+    <p>Large files can take a while to load, and too many large files can fill up local storage so your work stops saving.</p>
+    <p>If that happens, open your browser settings and clear the cached data and site data for this website. Use Save as JSON in the Page menu first if you want to keep your work.</p>
+    <div class="actions"><button class="primary" id="welcomeOk" type="button">Got it</button></div>
+  </div>
+</div>
 <div class="bar">
   <div class="menu">
     <button id="pageMenuBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="pageMenu">Page</button>
@@ -3761,6 +3777,18 @@ input[type=range]{accent-color:var(--accent)}
   render();
   commit();
   fit();
+
+  const welcomeEl=document.getElementById('welcome');
+  let seenWelcome=false;
+  try{seenWelcome=localStorage.getItem('simple-producer-welcome')==='1'}catch(e){}
+  if(!seenWelcome){
+    welcomeEl.hidden=false;
+    document.getElementById('welcomeOk').focus();
+  }
+  document.getElementById('welcomeOk').addEventListener('click',()=>{
+    welcomeEl.hidden=true;
+    try{localStorage.setItem('simple-producer-welcome','1')}catch(e){}
+  });
 })();
 </script>
 </body>
