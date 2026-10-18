@@ -456,14 +456,19 @@ input[type=range]{accent-color:var(--accent)}
         <button id="redo" type="button">Redo</button>
         <button id="drawStart" type="button">Draw</button>
       </div>
-      <div class="row nowrap">
-        <button id="addPage" type="button">Add pages</button>
-        <input id="addCount" type="number" min="1" max="50" value="1" aria-label="How many pages to add">
-      </div>
-      <div class="row nowrap">
-        <button id="delPage" type="button">Delete pages</button>
-        <input id="delPages" type="text" placeholder="1-3, 5, 7" aria-label="Pages to delete, for example 1-3 or 2,5,7" autocomplete="off">
-      </div>
+      <details id="pagesSect">
+        <summary>+ or - Pages</summary>
+        <div class="grp tight">
+        <div class="row nowrap">
+          <button id="addPage" type="button">Add pages</button>
+          <input id="addCount" type="number" min="1" max="50" value="1" aria-label="How many pages to add">
+        </div>
+        <div class="row nowrap">
+          <button id="delPage" type="button">Delete pages</button>
+          <input id="delPages" type="text" placeholder="1-3, 5, 7" aria-label="Pages to delete, for example 1-3 or 2,5,7" autocomplete="off">
+        </div>
+        </div>
+      </details>
       <details id="bgSect">
         <summary>Page background</summary>
         <div class="grp tight">

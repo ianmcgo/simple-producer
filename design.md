@@ -115,3 +115,5 @@ The page that new boxes go into gets a faint gold glow (class `current`, set in 
 Night mode and Stars buttons (and the Sky color picker) now live inside the Show and tools fold-out.
 
 The top of the Page menu has an Open / Save / Print fold-out holding Import PDF or Word, Open JSON, Save as JSON, Print and Save as PDF.
+
+Add pages and Delete pages sit in a closed fold-out called "+ or - Pages".
