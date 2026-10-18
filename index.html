@@ -411,11 +411,6 @@ input[type=range]{accent-color:var(--accent)}
 .foot a{color:#e2cfa2}
 .credit{text-align:center;padding:0 0 16px;color:#b9ae99;font-size:13px}
 @media (max-width:640px){
-  .bar{position:relative}
-  .menu{position:static}
-  .panel{left:8px;right:8px;top:100%;width:auto;max-width:none;max-height:calc(100vh - 150px);margin-top:4px}
-  .panel .row.nowrap{flex-wrap:wrap}
-  .panel input[type=range]{min-width:80px}
   .group + .group{padding-left:0;border-left:0}
 }
 @media print{
@@ -913,15 +908,28 @@ input[type=range]{accent-color:var(--accent)}
       m.querySelector('button').setAttribute('aria-expanded','false');
     });
   }
+  function fitPanel(panel){
+    panel.style.left='0px';
+    const r=panel.getBoundingClientRect();
+    const vw=Math.min(window.innerWidth,document.documentElement.clientWidth||9999,(window.visualViewport&&window.visualViewport.width)||9999,window.screen.width||9999);
+    const over=r.right-(vw-8);
+    if(over>0){
+      const room=r.left-8;
+      panel.style.left=(-Math.min(over,Math.max(0,room)))+'px';
+    }
+  }
   menus.forEach(m=>{
     const btn=m.querySelector('button');
     const panel=m.querySelector('.panel');
+    panel.addEventListener('toggle',()=>fitPanel(panel),true);
+    window.addEventListener('resize',()=>{if(!panel.hidden)fitPanel(panel)});
     btn.addEventListener('click',()=>{
       const open=panel.hidden;
       closeMenus(m);
       panel.hidden=!open;
       btn.setAttribute('aria-expanded',String(open));
       if(open&&m.id==='editMenuWrap')syncControls();
+      if(open)fitPanel(panel);
     });
   });
   document.addEventListener('pointerdown',e=>{

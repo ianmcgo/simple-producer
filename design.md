@@ -123,3 +123,5 @@ On screens 640 px wide or less, menu panels span the screen width under the top 
 Page menu order: fold-outs first (Open / Save / Print, + or - Pages, Page background, Show and tools), then Undo/Redo/Draw, Add header/footer, zoom controls, and Delete all boxes last.
 
 "Remove imported PDF or Word" removes the imported background from every page.
+
+Menu panels drop down under their button and shift left only as far as needed to stay on screen (fitPanel). The earlier full-width phone layout was removed.
