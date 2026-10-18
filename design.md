@@ -4,7 +4,7 @@ A single-file web app for laying out RPG supplement pages. Open `index.html` in 
 
 ## Menus
 
-- Page: Undo and Redo, Add pages (any number), Delete pages (type a list like `1-3` or `2,5,7`), Page background, Draw, Add header and Add footer, Page numbers, Snap to grid, Spell check, Show page indicator, Night mode, zoom slider with Fit width and Fit height, Save as JSON, Open JSON, Print, Print all as PDF, Delete all boxes (press twice to confirm; Undo brings them back).
+- Page: Undo and Redo, Add pages (any number), Delete pages (type a list like `1-3` or `2,5,7`), Page background, Draw, Add header and Add footer, a closed fold-out named "Show and tools" holding Show page numbers, Snap to grid, Spell check and Show page indicator, Night mode, zoom slider with Fit width and Fit height, Save as JSON, Open JSON, Print, Print all as PDF, Delete all boxes (press twice to confirm; Undo brings them back).
 - Insert: Text block, Image box (an empty drop zone), Table (3 x 3).
 - Edit: appears while a box is selected. Its sections depend on the box type.
 - The buttons are centered on the top bar. "Page 1 of 2" is a small badge at the bottom right of the screen and can be hidden in the Page menu.
