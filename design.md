@@ -24,6 +24,7 @@ Drop-down panels never show a scrollbar. If one is taller than the window it sti
 
 ## Text formatting
 
+- In the Edit menu the text tools sit in a fold-out named Text editing. For tables it starts closed, along with a second fold-out named Cell editing for the row, column, merge and resize tools; for other boxes Text editing starts open.
 - Select some words and bold, italic, underline, font, size, text color, alignment, numbered or bulleted lines, and links apply to just those words. With nothing selected they apply to the whole box (to the selected cells in a table).
 - Links keep the text color and underline. Ctrl or Cmd + click opens a link.
 - Night mode turns pages black, boxes and tables dark grey, and forces all text white, whatever color it was given (drawings keep their colors). Turning it off restores the original text colors.

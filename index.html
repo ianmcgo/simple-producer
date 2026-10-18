@@ -513,7 +513,9 @@ input[type=range]{accent-color:var(--accent)}
         <div class="hint" id="runInfo"></div>
         <div class="hint">Examples: all, 1-2, 3,5,7, odd, even</div>
       </div>
-      <div class="grp" id="fmtSect" hidden>
+      <details id="fmtSect" hidden>
+        <summary>Text editing</summary>
+        <div class="grp tight">
         <div class="hint" id="scopeHint"></div>
         <div class="row">
           <button class="fmt" id="bold" type="button" title="Bold"><b>B</b></button>
@@ -544,6 +546,7 @@ input[type=range]{accent-color:var(--accent)}
           <button id="linkDel" type="button">Unlink</button>
         </div>
       </div>
+      </details>
       <div class="grp" id="boxSect" hidden>
         <label><input id="boxed" type="checkbox"> Boxed</label>
         <div class="row" id="boxBdRow" hidden>
@@ -568,7 +571,9 @@ input[type=range]{accent-color:var(--accent)}
         <label>Border width <input id="imgBd" type="number" min="0" max="60" step="1" value="0"> px</label>
         <label><input id="capOn" type="checkbox"> Text under image</label>
       </div>
-      <div class="grp" id="tblSect" hidden>
+      <details id="tblSect" hidden>
+        <summary>Cell editing</summary>
+        <div class="grp tight">
         <div class="hint" id="cellHint"></div>
         <div class="row">
           <button id="selRow" type="button">Select row</button>
@@ -599,6 +604,7 @@ input[type=range]{accent-color:var(--accent)}
         </label>
         <label><input id="tblHead" type="checkbox"> Header row</label>
       </div>
+      </details>
       <details id="colorSect">
         <summary>Color</summary>
         <div class="grp tight">
@@ -1317,9 +1323,20 @@ input[type=range]{accent-color:var(--accent)}
     return !liveSel()&&cellHosts().length>0;
   }
 
+  let lastType=null;
+
   function syncControls(){
     const f=selected&&find(selected);
     const t=f?typeOf(f.b):null;
+    if(t!==lastType){
+      lastType=t;
+      if(t==='table'){
+        ctl.fmtSect.open=false;
+        ctl.tblSect.open=false;
+      }else if(t){
+        ctl.fmtSect.open=true;
+      }
+    }
     const textish=t==='text'||t==='table';
     ctl.editMenuWrap.hidden=!f;
     if(!f){
